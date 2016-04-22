@@ -1,4 +1,6 @@
-﻿using ReactNative.UIManager;
+﻿using ReactNative.Reflection;
+using ReactNative.UIManager;
+using ReactNative.UIManager.Annotations;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -20,6 +22,27 @@ namespace ReactNative.Views.Text
             get
             {
                 return ReactClass;
+            }
+        }
+
+        /// <summary>
+        /// Sets the text alignment.
+        /// </summary>
+        /// <param name="view">The view instance.</param>
+        /// <param name="textAlign">The text alignment string.</param>
+        [ReactProp(ViewProps.TextAlign)]
+        public void SetTextAlign(TextBlock view, string textAlign)
+        {
+            if (textAlign != null)
+            {
+                if (textAlign.Equals("auto"))
+                {
+                    view.TextAlignment = TextAlignment.DetectFromContent;
+                }
+                else
+                {
+                    view.TextAlignment = EnumHelpers.Parse<TextAlignment>(textAlign);
+                }
             }
         }
 
@@ -54,6 +77,7 @@ namespace ReactNative.Views.Text
             return new TextBlock
             {
                 TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.DetectFromContent,
             };
         }
     }
